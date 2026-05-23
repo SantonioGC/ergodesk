@@ -1,6 +1,5 @@
-// configurador.js — Lógica del Configurador
-
-// Estado actual de la configuración
+//logica del configurador
+//estado actual de la configuracion
 const configuracion = {
   tamano: null,
   patas: null,
@@ -18,8 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-agregar-carrito").addEventListener("click", agregarAlCarrito);
 });
 
-// ─── RENDERIZADO DE OPCIONES ─────────────────────────────────
-
+//renderizado de opciones
 function renderizarTamanos() {
   const contenedor = document.getElementById("opciones-tamano");
 
@@ -89,8 +87,7 @@ function renderizarAccesorios() {
   });
 }
 
-// ─── PREVIEW ─────────────────────────────────────────────────
-
+//para ver como se va viendo el escritorio personalizado
 function actualizarPreview() {
   const elTamano = document.getElementById("preview-tamano");
   const elPatas = document.getElementById("preview-patas");
@@ -118,8 +115,7 @@ function actualizarPreview() {
   }
 }
 
-// ─── PRECIO ──────────────────────────────────────────────────
-
+//actualiza el precio del escritorio personalizado
 function actualizarPrecio() {
   let total = PRECIO_BASE;
 
@@ -138,11 +134,10 @@ function calcularPrecioActual() {
   return total;
 }
 
-// ─── AGREGAR AL CARRITO ──────────────────────────────────────
-
+//para agregar al carrito y que no falte opciones
 function agregarAlCarrito() {
   if (!configuracion.tamano || !configuracion.patas) {
-    alert("Por favor elige el tamaño y tipo de patas antes de continuar.");
+    alert("por favor elige el tamaño y tipo de patas antes de continuar");
     return;
   }
 
@@ -160,5 +155,5 @@ function agregarAlCarrito() {
   };
 
   Store.agregarAlCarrito(item);
-  alert("Escritorio agregado al carrito.");
+  alert("Escritorio agregado al carrito");
 }

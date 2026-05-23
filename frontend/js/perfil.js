@@ -1,5 +1,4 @@
-// perfil.js — Lógica de login, registro y perfil
-
+//logica de login, registro y perfil
 const API = "http://127.0.0.1:3000/api";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,8 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-cerrar-sesion").addEventListener("click", cerrarSesion);
 });
 
-// ─── SESIÓN ──────────────────────────────────────────────────
-
+//ver en que sesion estas
 function verificarSesion() {
   const usuario = obtenerUsuario();
   if (usuario) mostrarPerfil(usuario);
@@ -36,8 +34,7 @@ function cerrarSesion() {
   mostrarAuth();
 }
 
-// ─── VISTAS ──────────────────────────────────────────────────
-
+//mostrar el perfil y demas
 function mostrarPerfil(usuario) {
   document.getElementById("vista-auth").style.display = "none";
   document.getElementById("vista-perfil").style.display = "block";
@@ -50,8 +47,7 @@ function mostrarAuth() {
   document.getElementById("vista-perfil").style.display = "none";
 }
 
-// ─── TABS ────────────────────────────────────────────────────
-
+//para mostrar los taps de login , registro etc
 function iniciarTabs() {
   document.getElementById("tab-login").addEventListener("click", () => {
     document.getElementById("form-login").style.display = "block";
@@ -68,8 +64,7 @@ function iniciarTabs() {
   });
 }
 
-// ─── VALIDACIÓN EN VIVO ──────────────────────────────────────
-
+//para validar informazion para el registro
 function iniciarValidacionEnVivo() {
   const inputPassword = document.getElementById("registro-password");
   const inputEmail = document.getElementById("registro-email");
@@ -121,14 +116,12 @@ function validarNombreEnVivo(nombre) {
   }
 }
 
-// ─── VALIDACIONES ────────────────────────────────────────────
-
+//validacion del email
 function validarEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// ─── LOGIN ───────────────────────────────────────────────────
-
+//para validar informacion de el login
 async function login() {
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
@@ -169,8 +162,7 @@ async function login() {
   }
 }
 
-// ─── REGISTRO ────────────────────────────────────────────────
-
+//para la funcion de regitro y sus requerimientos
 async function registro() {
   const nombre = document.getElementById("registro-nombre").value.trim();
   const email = document.getElementById("registro-email").value.trim();
@@ -222,8 +214,7 @@ async function registro() {
   }
 }
 
-// ─── UTILIDAD ────────────────────────────────────────────────
-
+//para mostrar errores si hay de por medio al login o registro
 function mostrarError(el, mensaje) {
   el.textContent = mensaje;
   el.style.display = "block";

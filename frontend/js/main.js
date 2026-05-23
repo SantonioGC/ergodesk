@@ -1,5 +1,4 @@
-// main.js — Lógica del Home
-
+//Logica del home
 const API = "http://127.0.0.1:3000/api";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,8 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarBusqueda();
 });
 
-// ─── PRODUCTOS ───────────────────────────────────────────────
-
+//carga los productos
 async function cargarDestacados() {
   try {
     const res = await fetch(`${API}/productos/destacados`);
@@ -62,8 +60,7 @@ function mostrarProductos(productos) {
   productos.forEach(producto => grid.appendChild(crearCard(producto)));
 }
 
-// ─── CATEGORÍAS ──────────────────────────────────────────────
-
+//mostrar por las categorias
 function iniciarCategorias() {
   const botones = document.querySelectorAll(".btn-categoria");
 
@@ -88,8 +85,7 @@ function iniciarCategorias() {
   });
 }
 
-// ─── BÚSQUEDA ────────────────────────────────────────────────
-
+//para hacer una busqueda
 function iniciarBusqueda() {
   document.getElementById("btn-busqueda").addEventListener("click", ejecutarBusqueda);
   document.getElementById("input-busqueda").addEventListener("keydown", (e) => {

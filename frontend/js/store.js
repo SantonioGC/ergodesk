@@ -1,10 +1,7 @@
-// store.js — Estado compartido de ErgoDesk
-// Maneja el carrito y funciones que se reutilizan en todas las páginas
-
+//maneja el carrito y funciones
 const Store = (() => {
 
-  // ─── CARRITO ───────────────────────────────────────────────
-
+  //para ver el estado del carrito
   function obtenerCarrito() {
     const data = localStorage.getItem("ergodesk_carrito");
     return data ? JSON.parse(data) : [];
@@ -16,11 +13,10 @@ const Store = (() => {
   }
 
   function agregarAlCarrito(item) {
-    // item puede ser un producto directo o una configuración personalizada
-    // Estructura esperada: { id, nombre, precio, cantidad, tipo, configuracion? }
+    //item puede ser un producto directo o una configuracion personalizada
     const carrito = obtenerCarrito();
 
-    // Si es un producto simple (no configurado), revisar si ya existe
+    //si es un producto simple revisar si ya existe
     if (item.tipo === "producto") {
       const existente = carrito.find(p => p.id === item.id && p.tipo === "producto");
       if (existente) {
@@ -64,8 +60,7 @@ const Store = (() => {
     return carrito.reduce((total, item) => total + item.cantidad, 0);
   }
 
-  // ─── UI ───────────────────────────────────────────────────
-
+  //actualizar el contador de el carrito
   function actualizarContadorCarrito() {
     const contador = document.getElementById("carrito-contador");
     if (!contador) return;
@@ -74,14 +69,12 @@ const Store = (() => {
     contador.style.display = cantidad > 0 ? "inline" : "none";
   }
 
-  // ─── FORMATO ─────────────────────────────────────────────
-
+  //formato del precio de las cosas
   function formatearPrecio(precio) {
     return precio.toLocaleString("es-MX", { style: "currency", currency: "MXN" });
   }
 
-  // ─── BÚSQUEDA ────────────────────────────────────────────
-
+  //para buscar los prodcutos
   function buscarProductos(termino) {
     if (!termino || termino.trim() === "") return PRODUCTOS;
     const t = termino.toLowerCase();
@@ -105,8 +98,7 @@ const Store = (() => {
     return PRODUCTOS.filter(p => p.destacado);
   }
 
-  // ─── EXPOSICIÓN PÚBLICA ───────────────────────────────────
-
+  //para exponer todas las funciones e utilizarlas
   return {
     obtenerCarrito,
     agregarAlCarrito,

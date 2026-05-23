@@ -1,10 +1,9 @@
-// routes/productos.js — Rutas de productos e inventario
-
+//Rutas de productos e inventario
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
 
-// Obtener todos los productos
+//obtener todos los productos
 router.get("/", async (req, res) => {
   try {
     const { categoria } = req.query;
@@ -19,32 +18,32 @@ router.get("/", async (req, res) => {
     const [productos] = await db.query(query, params);
     res.json(productos);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener productos." });
+    res.status(500).json({ error: "error al obtener productos" });
   }
 });
 
-// Obtener productos destacados
+//obtener productos destacados
 router.get("/destacados", async (req, res) => {
   try {
     const [productos] = await db.query("SELECT * FROM productos WHERE destacado = 1");
     res.json(productos);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener destacados." });
+    res.status(500).json({ error: "error al obtener destacados" });
   }
 });
 
-// Obtener un producto por ID
+//obtener un producto por ID
 router.get("/:id", async (req, res) => {
   try {
     const [productos] = await db.query("SELECT * FROM productos WHERE id = ?", [req.params.id]);
-    if (productos.length === 0) return res.status(404).json({ error: "Producto no encontrado." });
+    if (productos.length === 0) return res.status(404).json({ error: "producto no encontrado" });
     res.json(productos[0]);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener el producto." });
+    res.status(500).json({ error: "error al obtener el producto" });
   }
 });
 
-// Buscar productos
+//buscar productos
 router.get("/buscar/:termino", async (req, res) => {
   try {
     const termino = `%${req.params.termino}%`;
@@ -54,7 +53,7 @@ router.get("/buscar/:termino", async (req, res) => {
     );
     res.json(productos);
   } catch (error) {
-    res.status(500).json({ error: "Error al buscar productos." });
+    res.status(500).json({ error: "error al buscar productos" });
   }
 });
 

@@ -1,20 +1,18 @@
-// carrito.js — Lógica del Carrito
-
+//logica del carrito
 document.addEventListener("DOMContentLoaded", () => {
   Store.actualizarContadorCarrito();
   renderizarCarrito();
   iniciarOpcionesPago();
 });
 
-// ─── RENDERIZADO ─────────────────────────────────────────────
-
+//renderizado
 function renderizarCarrito() {
   const carrito = Store.obtenerCarrito();
   const lista = document.getElementById("lista-carrito");
   lista.innerHTML = "";
 
   if (carrito.length === 0) {
-    lista.innerHTML = "<p>Tu carrito está vacío.</p>";
+    lista.innerHTML = "<p>tu carrito esta vacio.</p>";
     document.getElementById("resumen-carrito").style.display = "none";
     return;
   }
@@ -58,8 +56,7 @@ function renderizarCarrito() {
   asignarEventosItems();
 }
 
-// ─── EVENTOS DE ITEMS ────────────────────────────────────────
-
+//eventos de los items
 function asignarEventosItems() {
   document.querySelectorAll(".btn-sumar").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -88,16 +85,14 @@ function asignarEventosItems() {
   });
 }
 
-// ─── TOTAL ───────────────────────────────────────────────────
-
+//actualizar el total del carro
 function actualizarTotal() {
   const total = Store.totalCarrito();
   document.getElementById("total-carrito").textContent = Store.formatearPrecio(total);
   actualizarPagoMensual();
 }
 
-// ─── PAGO A MESES ────────────────────────────────────────────
-
+//mostrar actulizar el pago a meses
 function iniciarOpcionesPago() {
   const radios = document.querySelectorAll("input[name='pago']");
   const selectorMeses = document.getElementById("selector-meses");
@@ -131,12 +126,11 @@ function actualizarPagoMensual() {
     `${Store.formatearPrecio(pagoMensual)} / mes`;
 }
 
-// ─── PAGO ────────────────────────────────────────────────────
-
+//funcion para hacer el pago de prooductos
 function procederAlPago() {
   if (Store.obtenerCarrito().length === 0) return;
-  // Por ahora solo confirma — aquí se conectaría el flujo de pago
-  alert("Gracias por tu compra. Pronto nos pondremos en contacto contigo.");
+  //aqui se conectaria el flujo de pago
+  alert("gracias por tu compra pronto nos pondremos en contacto contigo.");
   Store.vaciarCarrito();
   renderizarCarrito();
 }

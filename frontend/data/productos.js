@@ -4,7 +4,7 @@ const PRODUCTOS = [
     nombre: "ErgoDesk Pro 120",
     categoria: "escritorios",
     precio: 5999,
-    descripcion: "Escritorio ergonómico con superficie de 120cm, ideal para setup de trabajo o gaming.",
+    descripcion: "escritorio ergonomico de 120cm,para trabajo o gaming.",
     materiales: "MDF de alta densidad, estructura de acero",
     especificaciones: {
       largo: 120,
@@ -23,7 +23,7 @@ const PRODUCTOS = [
     nombre: "ErgoDesk Pro 140",
     categoria: "escritorios",
     precio: 7299,
-    descripcion: "Superficie amplia de 140cm perfecta para dual monitor o streaming con mucho espacio.",
+    descripcion: "superficie de 140cm para dual monitor o streaming.",
     materiales: "MDF de alta densidad, estructura de acero",
     especificaciones: {
       largo: 140,
@@ -42,7 +42,7 @@ const PRODUCTOS = [
     nombre: "ErgoDesk Compact 100",
     categoria: "escritorios",
     precio: 4299,
-    descripcion: "La opción más accesible para espacios pequeños sin sacrificar ergonomía.",
+    descripcion: "la opcion mas accesible para espacios pequeños.",
     materiales: "MDF de alta densidad, estructura de acero",
     especificaciones: {
       largo: 100,
@@ -61,7 +61,7 @@ const PRODUCTOS = [
     nombre: "ErgoDesk Max 160",
     categoria: "escritorios",
     precio: 8999,
-    descripcion: "El escritorio más grande del catálogo. Para streamers y creadores de contenido que necesitan espacio total.",
+    descripcion: "el escritorio mas grande para streamers que necesitan espacio.",
     materiales: "MDF premium, estructura de acero reforzado",
     especificaciones: {
       largo: 160,
@@ -82,7 +82,7 @@ const PRODUCTOS = [
     nombre: "Bandeja organizadora de cables",
     categoria: "accesorios",
     precio: 349,
-    descripcion: "Bandeja metálica que se instala bajo el escritorio para esconder y organizar todos los cables.",
+    descripcion: "Se instala bajo el escritorio para esconder cables.",
     fotos: ["bandeja_1.jpg"],
     destacado: false
   },
@@ -91,7 +91,7 @@ const PRODUCTOS = [
     nombre: "Soporte de monitor simple",
     categoria: "accesorios",
     precio: 599,
-    descripcion: "Brazo articulado para un monitor de hasta 27 pulgadas. Compatible con todos los modelos ErgoDesk.",
+    descripcion: "brazo para un monitor de hasta 27 pulgadas.",
     fotos: ["soporte_simple_1.jpg"],
     destacado: false
   },
@@ -100,7 +100,7 @@ const PRODUCTOS = [
     nombre: "Soporte de monitor doble",
     categoria: "accesorios",
     precio: 999,
-    descripcion: "Brazo articulado para dos monitores de hasta 27 pulgadas cada uno.",
+    descripcion: "brazo para dos monitores de hasta 27 pulgadas.",
     fotos: ["soporte_doble_1.jpg"],
     destacado: true
   },
@@ -109,7 +109,7 @@ const PRODUCTOS = [
     nombre: "Enchufe integrado con USB",
     categoria: "accesorios",
     precio: 449,
-    descripcion: "Se instala en la superficie del escritorio. Incluye 2 contactos y 2 puertos USB-A.",
+    descripcion: "se instala en la superficie y tiene 2 contactos y 2 puertos USB-A.",
     fotos: ["enchufe_1.jpg"],
     destacado: false
   },
@@ -120,7 +120,7 @@ const PRODUCTOS = [
     nombre: "Combo Gamer",
     categoria: "combos",
     precio: 8499,
-    descripcion: "ErgoDesk Pro 140 en negro carbono + soporte doble + bandeja de cables + enchufe USB. Todo lo que necesita un gamer.",
+    descripcion: "ergoDesk pro 140cm negro + soporte doble + bandeja + enchufe USB.",
     incluye: [2, 7, 5, 8],
     fotos: ["combo_gamer_1.jpg"],
     destacado: true
@@ -130,14 +130,14 @@ const PRODUCTOS = [
     nombre: "Combo Home Office",
     categoria: "combos",
     precio: 6799,
-    descripcion: "ErgoDesk Pro 120 + patas ajustables manuales + soporte simple + bandeja de cables.",
+    descripcion: "ergoDesk pro 120cm + patas ajustables + soporte simple + bandeja.",
     incluye: [1, 6, 5],
     fotos: ["combo_homeoffice_1.jpg"],
     destacado: true
   }
 ];
 
-// Opciones del configurador
+//opciones del configurador
 const OPCIONES_CONFIGURADOR = {
   tamanos: [
     { valor: 100, label: "100 cm", precioExtra: 0 },
@@ -164,4 +164,4 @@ const OPCIONES_CONFIGURADOR = {
   ]
 };
 
-const PRECIO_BASE = 3800; // Precio base del escritorio antes de configuración
+const PRECIO_BASE = 3800; //precio base del escritorio antes de configuracion

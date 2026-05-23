@@ -1,5 +1,4 @@
-// producto.js — Lógica del Detalle de Producto
-
+//logica del detalle de producto
 const API = "http://127.0.0.1:3000/api";
 
 let productoActual = null;
@@ -9,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const id = obtenerIdDeLaUrl();
   if (!id) {
-    mostrarError("No se especificó ningún producto.");
+    mostrarError("no se especifico ningun producto");
     return;
   }
 
@@ -18,35 +17,32 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-agregar-carrito").addEventListener("click", agregarAlCarrito);
 });
 
-// ─── URL ─────────────────────────────────────────────────────
-
+//para obtener la urk de las cosas
 function obtenerIdDeLaUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("id");
 }
 
-// ─── CARGA DESDE API ─────────────────────────────────────────
-
+//cargar el producto desde la api
 async function cargarProducto(id) {
   try {
     const res = await fetch(`${API}/productos/${id}`);
     if (!res.ok) {
-      mostrarError("Producto no encontrado.");
+      mostrarError("producto no encontrado");
       return;
     }
     productoActual = await res.json();
     renderizarProducto(productoActual);
   } catch {
-    mostrarError("No se pudo cargar el producto.");
+    mostrarError("no se pudo cargar el producto");
   }
 }
 
-// ─── RENDERIZADO ─────────────────────────────────────────────
-
+//renderizar el producto
 function renderizarProducto(producto) {
-  document.title = `${producto.nombre} — ErgoDesk MX`;
+  document.title = `${producto.nombre} — ErgoDesk`;
 
-  // Foto principal
+  //Foto principal
   const fotoPrincipal = document.getElementById("foto-principal");
   if (producto.imagen) {
     fotoPrincipal.src = producto.imagen;
@@ -78,8 +74,7 @@ function renderizarProducto(producto) {
   }
 }
 
-// ─── CARRITO ─────────────────────────────────────────────────
-
+//para agregar al carrito de los productos
 function agregarAlCarrito() {
   if (!productoActual) return;
 
@@ -95,8 +90,7 @@ function agregarAlCarrito() {
   alert(`${productoActual.nombre} agregado al carrito.`);
 }
 
-// ─── ERROR ───────────────────────────────────────────────────
-
+//para mostrar errores de por medio de las acciones de productos
 function mostrarError(mensaje) {
   document.getElementById("detalle-producto").innerHTML = `<p>${mensaje}</p>`;
 }
