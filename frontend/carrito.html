@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito — ErgoDesk MX</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="logo">ErgoDesk</span>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="configurador.html">Configurador</a></li>
+      <li><a href="carrito.html">Carrito <span id="carrito-contador"></span></a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+    </ul>
+  </nav>
+
+  <main id="carrito">
+    <h1>Tu carrito</h1>
+
+    <!-- LISTA DE PRODUCTOS -->
+    <section id="lista-carrito"></section>
+
+    <!-- RESUMEN -->
+    <section id="resumen-carrito">
+      <h2>Resumen</h2>
+      <p>Total: <strong id="total-carrito"></strong></p>
+
+      <div id="opciones-pago">
+        <h2>Forma de pago</h2>
+        <label>
+          <input type="radio" name="pago" value="contado" checked />
+          Pago de contado
+        </label>
+        <br />
+        <label>
+          <input type="radio" name="pago" value="meses" />
+          Pagar a meses sin intereses
+        </label>
+        <div id="selector-meses" style="display:none;">
+          <label for="num-meses">Número de meses:</label>
+          <select id="num-meses">
+            <option value="3">3 meses</option>
+            <option value="6">6 meses</option>
+            <option value="12">12 meses</option>
+            <option value="18">18 meses</option>
+          </select>
+          <p>Pago mensual: <strong id="pago-mensual"></strong></p>
+        </div>
+      </div>
+
+      <button id="btn-comprar">Proceder al pago</button>
+    </section>
+
+  </main>
+
+  <script src="data/productos.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/carrito.js"></script>
+</body>
+</html>

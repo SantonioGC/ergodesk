@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil — ErgoDesk MX</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="logo">ErgoDesk</span>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="configurador.html">Configurador</a></li>
+      <li><a href="carrito.html">Carrito <span id="carrito-contador"></span></a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+    </ul>
+  </nav>
+
+  <main id="perfil">
+
+    <!-- VISTA: NO AUTENTICADO -->
+    <div id="vista-auth">
+
+      <!-- TABS -->
+      <div id="tabs">
+        <button id="tab-login" class="tab activo">Iniciar sesión</button>
+        <button id="tab-registro" class="tab">Crear cuenta</button>
+      </div>
+
+      <!-- FORMULARIO LOGIN -->
+      <div id="form-login">
+        <h1>Iniciar sesión</h1>
+        <p id="error-login" style="display:none;"></p>
+        <label for="login-email">Correo electrónico</label>
+        <input type="email" id="login-email" placeholder="tucorreo@email.com" />
+        <label for="login-password">Contraseña</label>
+        <input type="password" id="login-password" placeholder="Tu contraseña" />
+        <button id="btn-login">Entrar</button>
+      </div>
+
+      <!-- FORMULARIO REGISTRO -->
+      <div id="form-registro" style="display:none;">
+        <h1>Crear cuenta</h1>
+        <p id="error-registro" style="display:none;"></p>
+        <label for="registro-nombre">Nombre</label>
+        <input type="text" id="registro-nombre" placeholder="Tu nombre completo" />
+        <small id="requisitos-nombre"></small>
+        <label for="registro-email">Correo electrónico</label>
+        <input type="email" id="registro-email" placeholder="tucorreo@email.com" />
+        <small id="requisitos-email"></small>
+        <label for="registro-password">Contraseña</label>
+        <input type="password" id="registro-password" placeholder="Contraseña" />
+        <ul id="requisitos-password">
+        <li id="req-longitud">Mínimo 8 caracteres</li>
+        <li id="req-mayuscula">Al menos una mayúscula</li>
+        <li id="req-numero">Al menos un número</li>
+        </ul>
+        <button id="btn-registro">Crear cuenta</button>
+      </div>
+    </div>
+
+    <!-- VISTA: AUTENTICADO -->
+    <div id="vista-perfil" style="display:none;">
+      <h1>Hola, <span id="nombre-usuario"></span></h1>
+      <p>Correo: <span id="email-usuario"></span></p>
+      <button id="btn-cerrar-sesion">Cerrar sesión</button>
+    </div>
+
+  </main>
+
+  <script src="data/productos.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/perfil.js"></script>
+</body>
+</html>

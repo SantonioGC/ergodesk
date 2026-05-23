@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Producto — ErgoDesk MX</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="logo">ErgoDesk</span>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="configurador.html">Configurador</a></li>
+      <li><a href="carrito.html">Carrito <span id="carrito-contador"></span></a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+    </ul>
+  </nav>
+
+  <main id="detalle-producto">
+
+    <!-- GALERÍA -->
+    <section id="seccion-galeria">
+      <img id="foto-principal" src="" alt="Foto del producto" />
+      <div id="miniaturas"></div>
+    </section>
+
+    <!-- INFO -->
+    <section id="seccion-info">
+      <h1 id="nombre-producto"></h1>
+      <p id="precio-producto"></p>
+      <p id="descripcion-producto"></p>
+
+      <div id="especificaciones">
+        <h2>Especificaciones</h2>
+        <ul id="lista-especificaciones"></ul>
+      </div>
+
+      <a id="link-configurador" href="configurador.html">
+        <button>Configurar este modelo</button>
+      </a>
+    </section>
+
+  </main>
+
+  <script src="data/productos.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/producto.js"></script>
+</body>
+</html>
