@@ -106,8 +106,11 @@ el frontend estará disponible en `http://127.0.0.1:5500/frontend/index.html`
 ## Comandos extra
 
 `docker compose up` levantar el proyecto
+
 `docker compose up --build` levantar y reconstruir imágenes
+
 `docker compose down` apagar los contenedores
+
 `docker compose down -v` apagar y eliminar la base de datos
 
 ---
@@ -117,10 +120,15 @@ el frontend estará disponible en `http://127.0.0.1:5500/frontend/index.html`
 Base URL: `http://localhost:3000/api`
 
 GET `/productos` todos los productos
+
 GET `/productos/destacados` productos destacados
+
 GET `/productos/:id` producto por ID
+
 GET `/productos/buscar/:termino` busqueda de productos
+
 POST `/auth/registro` crear cuenta
+
 POST `/auth/login` iniciar sesion
 
 ---
