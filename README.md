@@ -21,7 +21,7 @@ El proyecto integra un flujo de pago con Stripe en **modo de prueba** y el enví
 
 ## 2. Equipo de desarrollo
 
-- Daniel Zamudio Bracamontes
+- Daniel Bracamontes Zamudio
 - Jesus Arturo Carrillo Avilez
 - Sergio Antonio Gomez Cazares
 - Carlos Alberto Romero Corral
