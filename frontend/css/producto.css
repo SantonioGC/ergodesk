@@ -1,0 +1,110 @@
+#detalle-producto {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+#seccion-galeria { position: sticky; top: 80px; }
+
+#foto-principal {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  background-image: repeating-linear-gradient(45deg, var(--surface) 0px, var(--surface) 10px, var(--card) 10px, var(--card) 20px);
+}
+
+#miniaturas {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+#miniaturas img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: border-color var(--transition);
+  background: var(--card);
+  background-image: repeating-linear-gradient(45deg, var(--surface) 0px, var(--surface) 6px, var(--card) 6px, var(--card) 12px);
+}
+
+#miniaturas img:hover,
+#miniaturas img.activa { border-color: var(--accent); }
+
+#nombre-producto {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  letter-spacing: 0.06em;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+#precio-producto {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+#descripcion-producto {
+  color: var(--text-sub);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+#especificaciones h2 {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+#lista-especificaciones li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+
+#lista-especificaciones li:last-child { border-bottom: none; }
+
+.spec-label { color: var(--text-sub); }
+.spec-valor { color: var(--text); font-weight: 500; }
+
+#link-configurador button {
+  margin-top: 1.5rem;
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  padding: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  #detalle-producto { grid-template-columns: 1fr; }
+  #seccion-galeria { position: static; }
+}
+
+@media (max-width: 700px) {
+  #detalle-producto { padding: 1.5rem 1rem; gap: 1.5rem; }
+}

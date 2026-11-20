@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel admin — ErgoDesk MX</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo-link"><span class="logo">ErgoDesk</span></a>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+    </ul>
+  </nav>
+
+  <main id="admin">
+    <h1>Panel administrativo</h1>
+
+    <p id="admin-aviso" style="display:none"></p>
+
+    <div id="admin-contenido" style="display:none">
+      <div class="tabs">
+        <button data-tab="metricas" class="activa">Métricas</button>
+        <button data-tab="productos">Productos</button>
+        <button data-tab="pedidos">Pedidos</button>
+      </div>
+
+      <section id="tab-metricas">
+        <div class="tarjetas">
+          <div class="tarjeta"><span>Ventas reales confirmadas (producción)</span><strong id="m-ventas">—</strong></div>
+          <div class="tarjeta"><span>Ticket promedio</span><strong id="m-ticket">—</strong></div>
+          <div class="tarjeta"><span>Pedidos pagados en producción</span><strong id="m-pedidos">—</strong></div>
+          <div class="tarjeta"><span>Importe simulado (sandbox, no es venta)</span><strong id="m-ventas-sandbox">—</strong></div>
+          <div class="tarjeta"><span>Pedidos de prueba</span><strong id="m-pedidos-sandbox">—</strong></div>
+        </div>
+        <h2>Más vendidos</h2>
+        <ul id="m-top"></ul>
+      </section>
+
+      <section id="tab-productos" style="display:none">
+        <h2>Nuevo producto</h2>
+        <p id="n-error" class="msg-error" style="display:none"></p>
+        <div class="form-producto" id="form-nuevo">
+          <input id="n-nombre" placeholder="Nombre" maxlength="150" />
+          <select id="n-categoria"></select>
+          <input id="n-precio" type="text" placeholder="Precio (ej. 4999.99)" autocomplete="off" />
+          <input id="n-stock" type="text" placeholder="Stock" autocomplete="off" />
+          <input id="n-imagen" placeholder="URL HTTPS de imagen principal (opcional)" maxlength="500" />
+          <textarea id="n-galeria" placeholder="Galería: una URL HTTPS por línea (máximo 6)" rows="3"></textarea>
+          <button id="btn-crear">Agregar</button>
+        </div>
+        <h2>Catálogo</h2>
+        <div class="tabla-scroll">
+          <table>
+            <thead><tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Galería (URLs HTTPS, una por línea)</th><th>Destacado</th><th></th></tr></thead>
+            <tbody id="tabla-productos"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-pedidos" style="display:none">
+        <div class="tabla-scroll">
+          <table>
+            <thead><tr><th>#</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Envío</th><th>Guía</th><th></th></tr></thead>
+            <tbody id="tabla-pedidos"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    © ErgoDesk MX ·
+    <a href="privacidad.html">Aviso de privacidad</a> ·
+    <a href="terminos.html">Términos y condiciones</a>
+  </footer>
+
+  <script src="js/validar.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
