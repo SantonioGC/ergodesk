@@ -93,7 +93,7 @@ RESEND_FROM=onboarding@resend.dev
 "@
     Set-Content -Path .env -Value $envContent -Encoding ascii
 
-    Write-Host "Se creó .env con contraseñas y JWT aleatorios. Conserva el archivo en este equipo y no lo subas a Git."
+    Write-Host "Se creó .env con contraseñas y JWT aleatorios."
 }
 ```
 
