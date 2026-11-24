@@ -22,97 +22,76 @@
 
 ## 2. Requisitos
 
-En Windows:
+### Windows 10/11
 
-- Windows 10/11 con WSL 2 habilitado.
-- Docker Desktop instalado y abierto, utilizando el motor basado en Linux.
-- Git for Windows (incluye Git Bash).
-- Navegador web moderno.
+1. Instalar Git for Windows.
+2. Instalar Docker Desktop.
+3. Habilitar y utilizar el backend de WSL 2 en Docker Desktop.
+4. Iniciar Docker Desktop antes de ejecutar los comandos de Docker.
+5. Utilizar PowerShell para los comandos de Git y Docker. Se utilizará Git Bash únicamente para generar el certificado HTTPS local.
+6. Tener un navegador web moderno.
 
-En Linux o macOS:
+No es necesario instalar Node.js, pnpm ni MySQL directamente en Windows: se ejecutan dentro de Docker.
 
-- Git.
-- Docker Engine y Docker Compose v2.
-- OpenSSL.
-- Navegador web moderno.
+### Linux
 
-No es necesario instalar Node.js, pnpm ni MySQL directamente en el equipo: estos servicios se ejecutan dentro de Docker.
+1. Instalar Git.
+2. Instalar Docker Engine.
+3. Instalar Docker Compose v2 (el complemento `docker compose`).
+4. Instalar OpenSSL.
+5. Tener permiso para ejecutar Docker. Según la distribución, puede ser necesario utilizar `sudo` o agregar el usuario al grupo `docker`.
+6. Tener un navegador web moderno.
 
-## 3. Clonar el repositorio
+No es necesario instalar Node.js, pnpm ni MySQL directamente en Linux: se ejecutan dentro de Docker.
 
-Abre PowerShell, Git Bash o una terminal y ejecuta:
+## 3. Instalación en Windows (PowerShell)
 
-```bash
+Realiza estos pasos en orden. Abre PowerShell y utiliza esta sección completa para instalar el proyecto en Windows.
+
+### 3.1. Clonar el repositorio
+
+```powershell
 git clone https://github.com/SantonioGC/ergodesk.git
 cd ergodesk
 ```
 
-Si el repositorio solicita autenticación, utiliza una cuenta que tenga acceso al proyecto.
-
-Antes de continuar, comprueba que en la raíz estén `docker-compose.yml`, la carpeta `backend`, la carpeta `frontend`, `nginx` y `scripts`. En la versión actual del repositorio no se incluye un archivo `.env.example`; por eso no ejecutes `Copy-Item .env.example .env`. Crearás `.env` manualmente siguiendo el apartado siguiente.
-
-## 4. Crear y configurar el archivo `.env`
-
-El repositorio actual no incluye `.env.example`. Cada persona debe crear su propio archivo `.env` localmente. Este archivo contiene contraseñas y secretos privados; no debe subirse a Git ni compartirse.
-
-### Windows (PowerShell)
-
-Desde la carpeta raíz del proyecto, crea el archivo vacío:
+Comprueba que estás en la raíz del proyecto y que existen `docker-compose.yml`, `backend`, `frontend`, `nginx` y `scripts`:
 
 ```powershell
-New-Item -ItemType File -Path .env -Force
+Get-ChildItem
 ```
 
-Ábrelo con el Bloc de notas:
+### 3.2. Crear el archivo `.env`
+
+El repositorio no incluye `.env.example`. Crea tu propio archivo `.env` local. El siguiente bloque genera dos contraseñas MySQL diferentes y un secreto JWT aleatorio, y escribe la configuración inicial. No sobrescribe un `.env` que ya exista.
 
 ```powershell
-notepad .env
-```
+if (Test-Path .env) {
+    Write-Error "Ya existe .env. No se modificó para evitar sobrescribir tus credenciales."
+} else {
+    function New-RandomHex([int]$ByteCount) {
+        $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+        try {
+            $bytes = New-Object byte[] $ByteCount
+            $rng.GetBytes($bytes)
+            return [BitConverter]::ToString($bytes).Replace('-', '').ToLowerInvariant()
+        } finally {
+            $rng.Dispose()
+        }
+    }
 
-Genera tres valores aleatorios diferentes en PowerShell. Ejecuta este bloque para la contraseña de `DB_PASSWORD`:
+    $dbPassword = New-RandomHex 24
+    $rootPassword = New-RandomHex 24
+    $jwtSecret = New-RandomHex 32
 
-```powershell
-$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
-$bytes = New-Object byte[] 24
-$rng.GetBytes($bytes)
-[BitConverter]::ToString($bytes).Replace('-', '').ToLowerInvariant()
-$rng.Dispose()
-```
-
-Ejecuta el mismo bloque una segunda vez para `MYSQL_ROOT_PASSWORD`. Después ejecútalo una tercera vez cambiando `24` por `32`; ese resultado será `JWT_SECRET`.
-
-Copia los resultados directamente en el archivo `.env` que abriste. No pegues las contraseñas en Git ni las envíes por chat.
-
-### Linux o macOS
-
-Crea y abre el archivo:
-
-```bash
-nano .env
-```
-
-Genera los tres valores con OpenSSL en una terminal aparte:
-
-```bash
-openssl rand -hex 24
-openssl rand -hex 24
-openssl rand -hex 32
-```
-
-Los dos primeros son las contraseñas distintas de MySQL y el tercero es el `JWT_SECRET`.
-
-### Variables de entorno
-
-Deja las variables con esta estructura y reemplaza los valores de ejemplo por los secretos que generaste:
-
-```dotenv
+    $envContent = @"
 DB_HOST=db
 DB_USER=ergodesk_app
-DB_PASSWORD=REEMPLAZAR_POR_CONTRASENA_ALEATORIA_DE_LA_APP
+DB_PASSWORD=$dbPassword
 DB_NAME=ergodesk
-MYSQL_ROOT_PASSWORD=REEMPLAZAR_POR_OTRA_CONTRASENA_ALEATORIA
+MYSQL_ROOT_PASSWORD=$rootPassword
 
-JWT_SECRET=REEMPLAZAR_POR_SECRETO_ALEATORIO_DE_64_CARACTERES_HEXADECIMALES
+JWT_SECRET=$jwtSecret
 
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
@@ -121,122 +100,94 @@ FRONTEND_URL=https://localhost
 
 RESEND_API_KEY=
 RESEND_FROM=onboarding@resend.dev
+"@
+    Set-Content -Path .env -Value $envContent -Encoding ascii
+
+    Write-Host "Se creó .env con contraseñas y JWT aleatorios. Conserva el archivo en este equipo y no lo subas a Git."
+}
 ```
 
-Consideraciones:
+Para revisar o editar el archivo:
 
-- `DB_HOST` debe ser `db`, que es el nombre del servicio MySQL dentro de Docker Compose.
-- `DB_USER` debe ser `ergodesk_app`. No se utiliza `root` desde el backend.
-- `DB_PASSWORD` es la contraseña de `ergodesk_app`.
-- `MYSQL_ROOT_PASSWORD` es una contraseña diferente, reservada para administrar MySQL.
-- `DB_NAME` debe ser `ergodesk`.
-- `JWT_SECRET` debe ser un valor aleatorio privado de 64 caracteres hexadecimales.
-- Las contraseñas y el secreto JWT no deben llevar comillas ni espacios alrededor del signo `=`.
-- Stripe y Resend pueden quedar vacíos para iniciar y navegar la tienda. Las funciones que dependen de esos servicios no estarán disponibles hasta configurar sus credenciales.
-
-El servicio `db` de `docker-compose.yml` debe recibir `MYSQL_USER: ${DB_USER}` y `MYSQL_PASSWORD: ${DB_PASSWORD}`. Estas variables hacen que MySQL cree el usuario de aplicación durante la primera inicialización de un volumen vacío. Comprueba que el archivo `docker-compose.yml` del repositorio tenga ambas líneas antes de iniciar los servicios. El backend debe recibir `DB_USER` y `DB_PASSWORD` con los mismos valores que `MYSQL_USER` y `MYSQL_PASSWORD`.
-
-## 5. Generar el certificado HTTPS local
-
-Nginx está configurado para utilizar estos archivos locales:
-
-```text
-certs/localhost.pem
-certs/localhost-key.pem
+```powershell
+notepad .env
 ```
 
-Los certificados son autofirmados y se generan en cada equipo. No se deben subir los archivos `.pem`, `.key` o `.crt` al repositorio.
+No compartas el contenido de `.env`. Las variables `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` y `RESEND_API_KEY` pueden permanecer vacías para iniciar y navegar por la tienda; las funciones que dependen de esos servicios no estarán habilitadas hasta configurarlas.
 
-### Windows
+### 3.3. Generar el certificado HTTPS local
 
-1. Abre **Git Bash** desde la carpeta raíz del proyecto.
-2. Comprueba que OpenSSL esté disponible:
+El script de certificados utiliza OpenSSL y se ejecuta desde Git Bash.
+
+1. Abre el Explorador de archivos y entra en la carpeta `ergodesk` que acabas de clonar.
+2. Haz clic derecho dentro de la carpeta y abre **Git Bash Here** (o abre Git Bash y navega a la carpeta del proyecto).
+3. Comprueba que OpenSSL esté disponible:
 
    ```bash
    openssl version
    ```
 
-3. Ejecuta el script incluido:
+4. Ejecuta el script:
 
    ```bash
    sh scripts/generar-certificado-local.sh
    ```
 
-4. Cuando termine, vuelve a PowerShell.
+5. Cierra Git Bash y regresa a PowerShell.
 
-Si Git Bash indica que no encuentra `openssl`, instala OpenSSL y asegúrate de que esté disponible en el PATH de Git Bash antes de ejecutar el script.
+El script genera los certificados locales que Nginx espera dentro de `certs/`. Son autofirmados y el navegador mostrará una advertencia la primera vez que abras la tienda. No subas los certificados ni sus claves privadas al repositorio.
 
-### Linux o macOS
+### 3.4. Validar Docker Compose
 
-Desde la raíz del proyecto:
+Asegúrate de que Docker Desktop esté abierto y que indique que el motor está en ejecución. En PowerShell, desde la raíz de `ergodesk`, ejecuta:
 
-```bash
-sh scripts/generar-certificado-local.sh
-```
-
-El navegador mostrará una advertencia al entrar por primera vez porque el certificado es autofirmado. Es normal en este entorno local.
-
-## 6. Validar la configuración e iniciar ErgoDesk
-
-Desde PowerShell, Git Bash o una terminal situada en la raíz del repositorio, valida primero el archivo Compose:
-
-```bash
+```powershell
 docker compose config --quiet
 ```
 
-Si no muestra errores, construye e inicia los servicios:
+Si no aparece ningún error, la sintaxis de Compose es válida.
 
-```bash
+### 3.5. Construir e iniciar ErgoDesk
+
+```powershell
 docker compose up --build -d
 ```
 
-En la primera ejecución Docker descarga las imágenes, construye el backend, crea el volumen de MySQL e inicializa automáticamente la base de datos con `backend/db/schema.sql`. En esa inicialización se crean la base `ergodesk`, el usuario `ergodesk_app`, las tablas y el catálogo inicial.
+En la primera ejecución Docker descarga las imágenes, construye el backend, crea el volumen de MySQL e inicializa la base de datos con `backend/db/schema.sql`. El Compose debe incluir `MYSQL_USER: ${DB_USER}` y `MYSQL_PASSWORD: ${DB_PASSWORD}` en el servicio `db`; así MySQL crea el usuario `ergodesk_app` durante la inicialización del volumen vacío.
 
-Los servicios son:
+### 3.6. Comprobar los servicios
 
-- `db`: MySQL 8 y almacenamiento persistente.
-- `backend`: API REST de Node.js/Express.
-- `nginx`: frontend y proxy inverso HTTPS hacia el backend.
-
-El backend espera a que MySQL esté saludable. Nginx espera a que el healthcheck del backend responda correctamente.
-
-## 7. Comprobar que los servicios estén funcionando
-
-Consulta el estado:
-
-```bash
+```powershell
 docker compose ps
 ```
 
-En una instalación correcta, `db` y `backend` deben aparecer como `healthy`; `nginx` debe aparecer como `Up`.
+En una instalación correcta, `db` y `backend` deben aparecer como `healthy`, y `nginx` como `Up`.
 
-Si algún servicio no inicia, consulta sus registros:
+Para revisar los registros:
 
-```bash
+```powershell
 docker compose logs --tail=100 db backend nginx
 ```
 
-En Windows PowerShell también puedes probar la API de categorías con:
+Para probar la API de categorías:
 
 ```powershell
 curl.exe -i http://localhost:3000/api/productos/categorias
 ```
 
-La respuesta esperada es `HTTP/1.1 200 OK` y un JSON con las categorías iniciales. Si devuelve `500`, revisa primero `docker compose logs --tail=100 backend` y la conexión del backend con MySQL.
+La respuesta esperada es `HTTP/1.1 200 OK` y un JSON con las categorías iniciales. Si devuelve `500`, consulta primero los registros del backend y comprueba que sus variables `DB_USER` y `DB_PASSWORD` coincidan con las variables que se utilizaron para crear el usuario MySQL.
 
-## 8. Abrir la tienda
+### 3.7. Abrir la tienda
 
 Abre en el navegador:
 
 **https://localhost**
 
-El puerto HTTP 80 redirige a HTTPS. Acepta la advertencia del certificado autofirmado para esta instalación local.
+Acepta la advertencia del certificado autofirmado para esta instalación local. No utilices `http://localhost:3000` como dirección de la tienda: ese puerto corresponde al backend/API. Nginx sirve el frontend por HTTPS y redirige las solicitudes `/api` al backend.
 
-No utilices `http://localhost:3000` como dirección de la tienda: ese puerto corresponde al backend/API. Nginx sirve las páginas del frontend en `https://localhost` y reenvía las solicitudes `/api` al backend.
+### 3.8. Crear la primera cuenta administradora
 
-## 9. Crear la primera cuenta administradora
-
-El proyecto no incluye una cuenta de administrador con contraseña predeterminada. Después de iniciar los servicios, abre PowerShell y ejecuta el siguiente bloque. Se solicitarán el correo y la contraseña; la contraseña se captura de forma oculta.
+El proyecto no incluye una cuenta de administrador con contraseña predeterminada. Después de iniciar los servicios, ejecuta en PowerShell:
 
 ```powershell
 $adminEmail = Read-Host "Correo del administrador"
@@ -249,11 +200,160 @@ $adminPassword = $null
 $adminPasswordSecure = $null
 ```
 
-El script crea el administrador o asigna el rol de administrador a una cuenta existente con ese correo. Después inicia sesión en la tienda y abre:
+El script crea el administrador o asigna el rol de administrador a una cuenta que ya exista con ese correo. Después inicia sesión y abre:
 
 **https://localhost/admin.html**
 
-## 10. Pagos y correos
+## 4. Instalación en Linux (terminal)
+
+Realiza estos pasos en orden. Los comandos de esta sección son para una terminal Linux; no los ejecutes en PowerShell.
+
+### 4.1. Clonar el repositorio
+
+```bash
+git clone https://github.com/SantonioGC/ergodesk.git
+cd ergodesk
+```
+
+Comprueba que estás en la raíz del proyecto:
+
+```bash
+ls -la
+```
+
+Deben existir `docker-compose.yml` y las carpetas `backend`, `frontend`, `nginx` y `scripts`.
+
+### 4.2. Crear el archivo `.env`
+
+El repositorio no incluye `.env.example`. Crea tu propio `.env` local. Este bloque genera dos contraseñas MySQL diferentes y un secreto JWT aleatorio. No sobrescribe un `.env` que ya exista.
+
+```bash
+if [ -e .env ]; then
+  echo "Ya existe .env. No se modificó para evitar sobrescribir tus credenciales."
+else
+  DB_PASSWORD="$(openssl rand -hex 24)"
+  MYSQL_ROOT_PASSWORD="$(openssl rand -hex 24)"
+  JWT_SECRET="$(openssl rand -hex 32)"
+
+  cat > .env <<ENV_FILE
+DB_HOST=db
+DB_USER=ergodesk_app
+DB_PASSWORD=$DB_PASSWORD
+DB_NAME=ergodesk
+MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+
+JWT_SECRET=$JWT_SECRET
+
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+FRONTEND_URL=https://localhost
+
+RESEND_API_KEY=
+RESEND_FROM=onboarding@resend.dev
+ENV_FILE
+
+  chmod 600 .env
+  unset DB_PASSWORD MYSQL_ROOT_PASSWORD JWT_SECRET
+  echo ".env creado con secretos aleatorios. No lo subas a Git."
+fi
+```
+
+Para revisar o editar el archivo:
+
+```bash
+nano .env
+```
+
+No compartas el contenido de `.env`. Las variables `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` y `RESEND_API_KEY` pueden permanecer vacías para iniciar y navegar por la tienda; las funciones que dependen de esos servicios no estarán habilitadas hasta configurarlas.
+
+### 4.3. Generar el certificado HTTPS local
+
+Desde la raíz del proyecto, ejecuta:
+
+```bash
+openssl version
+sh scripts/generar-certificado-local.sh
+```
+
+El script genera los certificados locales que Nginx espera dentro de `certs/`. Son autofirmados y el navegador mostrará una advertencia la primera vez que abras la tienda. No subas los certificados ni sus claves privadas al repositorio.
+
+### 4.4. Validar Docker Compose
+
+Comprueba que Docker Engine esté en ejecución. Desde la raíz de `ergodesk`, ejecuta:
+
+```bash
+docker compose config --quiet
+```
+
+Si tu usuario no tiene permiso para utilizar Docker, puede que necesites anteponer `sudo` a los comandos de Docker.
+
+### 4.5. Construir e iniciar ErgoDesk
+
+```bash
+docker compose up --build -d
+```
+
+En la primera ejecución Docker descarga las imágenes, construye el backend, crea el volumen de MySQL e inicializa la base de datos con `backend/db/schema.sql`. El Compose debe incluir `MYSQL_USER: ${DB_USER}` y `MYSQL_PASSWORD: ${DB_PASSWORD}` en el servicio `db`; así MySQL crea el usuario `ergodesk_app` durante la inicialización del volumen vacío.
+
+### 4.6. Comprobar los servicios
+
+```bash
+docker compose ps
+```
+
+En una instalación correcta, `db` y `backend` deben aparecer como `healthy`, y `nginx` como `Up`.
+
+Para revisar los registros:
+
+```bash
+docker compose logs --tail=100 db backend nginx
+```
+
+Para probar la API de categorías:
+
+```bash
+curl -i http://localhost:3000/api/productos/categorias
+```
+
+La respuesta esperada es `HTTP/1.1 200 OK` y un JSON con las categorías iniciales.
+
+### 4.7. Abrir la tienda
+
+Abre en el navegador:
+
+**https://localhost**
+
+Acepta la advertencia del certificado autofirmado para esta instalación local. No utilices `http://localhost:3000` como dirección de la tienda: ese puerto corresponde al backend/API. Nginx sirve el frontend por HTTPS y redirige las solicitudes `/api` al backend.
+
+### 4.8. Crear la primera cuenta administradora
+
+El proyecto no incluye una cuenta de administrador con contraseña predeterminada. Desde la terminal Linux, ejecuta:
+
+```bash
+read -r -p "Correo del administrador: " ADMIN_EMAIL
+read -r -s -p "Contraseña (mínimo 8 caracteres): " ADMIN_PASSWORD
+echo
+
+docker compose exec \
+  -e ADMIN_EMAIL="$ADMIN_EMAIL" \
+  -e ADMIN_PASSWORD="$ADMIN_PASSWORD" \
+  -e ADMIN_NOMBRE="Administrador" \
+  backend node scripts/crear-admin.js
+
+unset ADMIN_EMAIL ADMIN_PASSWORD
+```
+
+El script crea el administrador o asigna el rol de administrador a una cuenta que ya exista con ese correo. Después inicia sesión y abre:
+
+**https://localhost/admin.html**
+
+## 5. Pagos y correos
+
+Esta configuración es igual para Windows y Linux; lo que cambia es el editor utilizado para modificar `.env`.
+
+- **Windows:** abre el archivo con `notepad .env` desde PowerShell.
+- **Linux:** abre el archivo con `nano .env` desde la terminal.
 
 ### Stripe Checkout
 
@@ -277,25 +377,35 @@ La opción OXXO de esta versión genera una referencia simulada. No es una refer
 
 Para enviar correos de confirmación configura `RESEND_API_KEY` y un remitente permitido en `RESEND_FROM`. Para envíos a destinatarios externos en un uso real, utiliza un dominio verificado en Resend.
 
-Después de cambiar variables de Stripe o Resend, recrea el backend:
+Después de cambiar variables de Stripe o Resend, recrea el backend.
+
+**Windows (PowerShell):**
+
+```powershell
+docker compose up -d --force-recreate backend
+```
+
+**Linux (terminal):**
 
 ```bash
 docker compose up -d --force-recreate backend
 ```
 
-## 11. Base de datos y persistencia
+## 6. Base de datos y persistencia
 
 Los datos de MySQL se guardan en el volumen Docker `ergodesk_data`. Detener o recrear los contenedores no elimina ese volumen.
 
-Para detener los servicios sin borrar la base de datos:
+**Windows (PowerShell) — detener y volver a iniciar:**
+
+```powershell
+docker compose down
+docker compose up -d
+```
+
+**Linux (terminal) — detener y volver a iniciar:**
 
 ```bash
 docker compose down
-```
-
-Para volver a iniciarlos:
-
-```bash
 docker compose up -d
 ```
 
@@ -305,9 +415,17 @@ MySQL ejecuta `backend/db/schema.sql` automáticamente solamente cuando el volum
 
 Las migraciones de `backend/db/migrations/` son para bases anteriores. Antes de ejecutar una migración en una base existente, realiza un respaldo y comprueba qué columnas tiene. No ejecutes migraciones sobre una base nueva que ya contiene las columnas del esquema actualizado.
 
-## 12. Ejecutar las pruebas automatizadas
+## 7. Ejecutar las pruebas automatizadas
 
-Con Docker y MySQL iniciados, ejecuta:
+Con Docker y MySQL iniciados:
+
+**Windows (PowerShell):**
+
+```powershell
+docker compose --profile test run --rm backend-test
+```
+
+**Linux (terminal):**
 
 ```bash
 docker compose --profile test run --rm backend-test
@@ -315,7 +433,43 @@ docker compose --profile test run --rm backend-test
 
 El servicio `backend-test` construye la imagen con las dependencias de desarrollo y ejecuta las pruebas automatizadas.
 
-## 13. Comandos útiles
+## 8. Comandos útiles
+
+Los siguientes comandos están separados por sistema operativo para evitar mezclar PowerShell con la terminal de Linux.
+
+### Windows (PowerShell)
+
+Ver el estado de los servicios:
+
+```powershell
+docker compose ps
+```
+
+Ver los registros:
+
+```powershell
+docker compose logs --tail=100 db backend nginx
+```
+
+Seguir los registros en tiempo real:
+
+```powershell
+docker compose logs -f db backend nginx
+```
+
+Reconstruir después de modificar el código:
+
+```powershell
+docker compose up --build -d
+```
+
+Detener los servicios sin eliminar datos:
+
+```powershell
+docker compose down
+```
+
+### Linux (terminal)
 
 Ver el estado de los servicios:
 
@@ -323,7 +477,7 @@ Ver el estado de los servicios:
 docker compose ps
 ```
 
-Ver registros:
+Ver los registros:
 
 ```bash
 docker compose logs --tail=100 db backend nginx
@@ -347,7 +501,9 @@ Detener los servicios sin eliminar datos:
 docker compose down
 ```
 
-## 14. Estructura del repositorio
+Si Linux muestra un error de permisos al ejecutar Docker, utiliza `sudo` antes del comando o configura los permisos de Docker para tu usuario. En Windows, asegúrate de que Docker Desktop esté abierto y que el motor esté iniciado.
+
+## 9. Estructura del repositorio
 
 ```text
 ergodesk/
@@ -377,9 +533,9 @@ ergodesk/
 └── README.md
 ```
 
-## 15. Seguridad antes de publicar cambios
+## 10. Seguridad antes de publicar cambios
 
-- En el estado actual del repositorio no se incluye `.env.example`; crea `.env` manualmente siguiendo el apartado 4.
+- El repositorio no incluye `.env.example`; crea `.env` manualmente siguiendo la sección correspondiente a tu sistema operativo.
 - No subas `.env`, claves privadas, contraseñas, tokens ni API Keys.
 - En `certs/` conserva solamente `.gitkeep`; genera `localhost.pem` y `localhost-key.pem` localmente en cada equipo.
 - Si algún secreto o certificado privado ya fue subido a Git, eliminarlo del último commit no basta: rota el secreto y limpia el historial del repositorio cuando corresponda.
