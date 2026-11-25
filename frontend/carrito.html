@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito — ErgoDesk MX</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/carrito.css" />
+</head>
+<body>
+
+  <nav>
+   <a href="index.html" class="logo-link"><span class="logo">ErgoDesk</span></a>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="configurador.html">Configurador</a></li>
+      <li><a href="carrito.html">Carrito <span id="carrito-contador"></span></a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+    </ul>
+  </nav>
+
+  <main id="carrito">
+    <h1>Tu carrito</h1>
+
+    <!-- LISTA DE PRODUCTOS -->
+    <section id="lista-carrito"></section>
+
+    <section id="resumen-carrito">
+      <h2>Resumen</h2>
+      <p>Total: <strong id="total-carrito"></strong></p>
+
+      <p>La forma de pago se selecciona al finalizar la compra. Por ahora está activo el entorno de pruebas sandbox; no se realizan cargos reales.</p>
+
+      <button id="btn-comprar">Proceder al pago</button>
+    </section>
+
+  </main>
+
+    <footer>
+    © ErgoDesk MX ·
+    <a href="privacidad.html">Aviso de privacidad</a> ·
+    <a href="terminos.html">Términos y condiciones</a>
+  </footer>
+
+<script src="js/store.js"></script>
+  <script src="js/carrito.js"></script>
+</body>
+</html>
