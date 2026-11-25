@@ -35,7 +35,7 @@
 1. Git
 2. Docker Engine
 3. Docker Compose v2
-4. OpenSSL.
+4. OpenSSL
 
 ## 3. Instalación en Windows (PowerShell)
 
@@ -55,7 +55,7 @@ Get-ChildItem
 ```
 
 ### 3.2. Crear el archivo `.env`
-Crea tu propio archivo `.env` local. El siguiente bloque genera dos contraseñas MySQL diferentes y un secreto JWT aleatorio, y escribe la configuración inicial. No sobrescribe un `.env` que ya exista.
+Crea tu propio archivo `.env` local. El siguiente bloque genera dos contraseñas MySQL diferentes y un secreto JWT aleatorio, y escribe la configuración inicial. No sobrescribe un `.env` que ya exista
 
 ```powershell
 if (Test-Path .env) {
@@ -113,7 +113,7 @@ notepad .env
 
 El script de certificados utiliza OpenSSL y se ejecuta desde Git Bash.
 
-1. Abre el Explorador de archivos y entra en la carpeta `ergodesk` que acabas de clonar.
+1. Abre el Explorador de archivos y entra en la carpeta `ergodesk` que acabas de clonar
 2. Haz clic derecho dentro de la carpeta y abre **Git Bash Here**
 3. Comprueba que OpenSSL esté disponible:
 
@@ -129,7 +129,7 @@ El script de certificados utiliza OpenSSL y se ejecuta desde Git Bash.
 
 5. Cierra Git Bash y regresa a PowerShell.
 
-El script genera los certificados locales que Nginx espera dentro de `certs/`. Son autofirmados y el navegador mostrará una advertencia la primera vez que abras la tienda.
+El script genera los certificados locales que Nginx espera dentro de `certs/`. Son autofirmados y el navegador mostrará una advertencia la primera vez que abras la tienda
 
 ### 3.4. Validar Docker Compose
 
@@ -145,7 +145,7 @@ docker compose config --quiet
 docker compose up --build -d
 ```
 
-En la primera ejecución Docker descarga las imágenes, construye el backend, crea el volumen de MySQL e inicializa la base de datos con `backend/db/schema.sql`. El Compose debe incluir `MYSQL_USER: ${DB_USER}` y `MYSQL_PASSWORD: ${DB_PASSWORD}` en el servicio `db`; así MySQL crea el usuario `ergodesk_app` durante la inicialización del volumen vacío.
+En la primera ejecución Docker descarga las imágenes, construye el backend, crea el volumen de MySQL e inicializa la base de datos con `backend/db/schema.sql`. El Compose debe incluir `MYSQL_USER: ${DB_USER}` y `MYSQL_PASSWORD: ${DB_PASSWORD}` en el servicio `db`; así MySQL crea el usuario `ergodesk_app` durante la inicialización del volumen vacío
 
 ### 3.6. Comprobar los servicios
 
@@ -167,7 +167,7 @@ Para probar la API de categorías:
 curl.exe -i http://localhost:3000/api/productos/categorias
 ```
 
-La respuesta esperada es `HTTP/1.1 200 OK` y un JSON con las categorías iniciales. Si devuelve `500`, consulta primero los registros del backend y comprueba que sus variables `DB_USER` y `DB_PASSWORD` coincidan con las variables que se utilizaron para crear el usuario MySQL.
+La respuesta esperada es `HTTP/1.1 200 OK` y un JSON con las categorías iniciales. Si devuelve `500`, consulta primero los registros del backend y comprueba que sus variables `DB_USER` y `DB_PASSWORD` coincidan con las variables que se utilizaron para crear el usuario MySQL
 
 ### 3.7. Abrir la tienda
 
@@ -175,7 +175,7 @@ Abre en el navegador:
 
 **https://localhost**
 
-Acepta la advertencia del certificado autofirmado para esta instalación local. No utilices `http://localhost:3000` como dirección de la tienda: ese puerto corresponde al backend/API. Nginx sirve el frontend por HTTPS y redirige las solicitudes `/api` al backend.
+Acepta la advertencia del certificado autofirmado para esta instalación local. No utilices `http://localhost:3000` como dirección de la tienda: ese puerto corresponde al backend/API. Nginx sirve el frontend por HTTPS y redirige las solicitudes `/api` al backend
 
 ### 3.8. Crear la primera cuenta administradora
 
@@ -198,7 +198,7 @@ El script crea el administrador o asigna el rol de administrador a una cuenta qu
 
 ## 4. Instalación en Linux (terminal)
 
-Realiza estos pasos en orden. Los comandos de esta sección son para una terminal Linux; no los ejecutes en PowerShell.
+Realiza estos pasos en orden. Los comandos de esta sección son para una terminal Linux; no los ejecutes en PowerShell
 
 ### 4.1. Clonar el repositorio
 
@@ -216,7 +216,7 @@ ls -la
 Deben existir `docker-compose.yml` y las carpetas `backend`, `frontend`, `nginx` y `scripts`.
 
 ### 4.2. Crear el archivo `.env`
-Crea tu propio `.env` local. Este bloque genera dos contraseñas MySQL diferentes y un secreto JWT aleatorio. No sobrescribe un `.env` que ya exista.
+Crea tu propio `.env` local. Este bloque genera dos contraseñas MySQL diferentes y un secreto JWT aleatorio. No sobrescribe un `.env` que ya exista
 
 ```bash
 if [ -e .env ]; then
@@ -269,7 +269,7 @@ openssl version
 sh scripts/generar-certificado-local.sh
 ```
 
-El script genera los certificados locales que Nginx espera dentro de `certs/`. Son autofirmados y el navegador mostrará una advertencia la primera vez que abras la tienda.
+El script genera los certificados locales que Nginx espera dentro de `certs/`. Son autofirmados y el navegador mostrará una advertencia la primera vez que abras la tienda
 
 ### 4.4. Validar Docker Compose
 
@@ -279,7 +279,7 @@ Comprueba que Docker Engine esté en ejecución. Desde la raíz de `ergodesk`, e
 docker compose config --quiet
 ```
 
-Si tu usuario no tiene permiso para utilizar Docker, puede que necesites anteponer `sudo` a los comandos de Docker.
+Si tu usuario no tiene permiso para utilizar Docker, puede que necesites anteponer `sudo` a los comandos de Docker
 
 ### 4.5. Construir e iniciar ErgoDesk
 
@@ -287,7 +287,7 @@ Si tu usuario no tiene permiso para utilizar Docker, puede que necesites antepon
 docker compose up --build -d
 ```
 
-En la primera ejecución Docker descarga las imágenes, construye el backend, crea el volumen de MySQL e inicializa la base de datos con `backend/db/schema.sql`. El Compose debe incluir `MYSQL_USER: ${DB_USER}` y `MYSQL_PASSWORD: ${DB_PASSWORD}` en el servicio `db`; así MySQL crea el usuario `ergodesk_app` durante la inicialización del volumen vacío.
+En la primera ejecución Docker descarga las imágenes, construye el backend, crea el volumen de MySQL e inicializa la base de datos con `backend/db/schema.sql`. El Compose debe incluir `MYSQL_USER: ${DB_USER}` y `MYSQL_PASSWORD: ${DB_PASSWORD}` en el servicio `db`; así MySQL crea el usuario `ergodesk_app` durante la inicialización del volumen vacío
 
 ### 4.6. Comprobar los servicios
 
@@ -295,7 +295,7 @@ En la primera ejecución Docker descarga las imágenes, construye el backend, cr
 docker compose ps
 ```
 
-En una instalación correcta, `db` y `backend` deben aparecer como `healthy`, y `nginx` como `Up`.
+En una instalación correcta, `db` y `backend` deben aparecer como `healthy`, y `nginx` como `Up`
 
 Para revisar los registros:
 
@@ -309,7 +309,7 @@ Para probar la API de categorías:
 curl -i http://localhost:3000/api/productos/categorias
 ```
 
-La respuesta esperada es `HTTP/1.1 200 OK` y un JSON con las categorías iniciales.
+La respuesta esperada es `HTTP/1.1 200 OK` y un JSON con las categorías iniciales
 
 ### 4.7. Abrir la tienda
 
@@ -345,12 +345,12 @@ El script crea el administrador o asigna el rol de administrador a una cuenta qu
 
 Esta configuración es igual para Windows y Linux; lo que cambia es el editor utilizado para modificar `.env`.
 
-- **Windows:** abre el archivo con `notepad .env` desde PowerShell.
-- **Linux:** abre el archivo con `nano .env` desde la terminal.
+- **Windows:** abre el archivo con `notepad .env` desde PowerShell
+- **Linux:** abre el archivo con `nano .env` desde la terminal
 
 ### Stripe Checkout (modo de prueba)
 
-Para probar pagos con tarjeta, configura una clave secreta de Stripe de pruebas (`sk_test_`) en `STRIPE_SECRET_KEY`. No utilices claves `sk_live_` ni tarjetas bancarias reales. Los pagos registrados en este proyecto corresponden al entorno de pruebas y no representan cobros reales.
+Para probar pagos con tarjeta, configura una clave secreta de Stripe de pruebas (`sk_test_`) en `STRIPE_SECRET_KEY`. No utilices claves `sk_live_` ni tarjetas bancarias reales. Los pagos registrados en este proyecto corresponden al entorno de pruebas y no representan cobros reales
 
 La tarjeta de prueba aprobada de Stripe es:
 
@@ -360,14 +360,14 @@ La tarjeta de prueba aprobada de Stripe es:
 | Vencimiento | Cualquier fecha futura |
 | CVC | Cualquier código de tres dígitos, por ejemplo `123` |
 
-Si `STRIPE_SECRET_KEY` está vacía, la tienda puede abrirse, pero no se podrán completar pagos con tarjeta.
+Si `STRIPE_SECRET_KEY` está vacía, la tienda puede abrirse, pero no se podrán completar pagos con tarjeta
 
 ### Correos de confirmación con Gmail SMTP
 
-El backend utiliza Nodemailer para enviar el correo de confirmación a la dirección de correo asociada a la cuenta del cliente.
+El backend utiliza Nodemailer para enviar el correo de confirmación a la dirección de correo asociada a la cuenta del cliente
 
-1. Activa la verificación en dos pasos en la cuenta de Google que utilizarás como remitente.
-2. Genera una **contraseña de aplicación** desde la configuración de seguridad de Google. Utiliza esa contraseña, no la contraseña normal de Gmail.
+1. Activa la verificación en dos pasos en la cuenta de Google que utilizarás como remitent
+2. Genera una **contraseña de aplicación** desde la configuración de seguridad de Google. Utiliza esa contraseña, no la contraseña normal de Gmail
 3. Completa estas variables en `.env`:
 
 ```dotenv
@@ -379,9 +379,9 @@ SMTP_PASS=tu_contrasena_de_aplicacion
 SMTP_FROM=ErgoDesk <tu_cuenta@gmail.com>
 ```
 
-`SMTP_USER` y el correo dentro de `SMTP_FROM` deben corresponder a la cuenta Gmail que generó la contraseña de aplicación. En `SMTP_PASS` pega la contraseña de aplicación sin los espacios de separación que Google puede mostrar.
+`SMTP_USER` y el correo dentro de `SMTP_FROM` deben corresponder a la cuenta Gmail que generó la contraseña de aplicación. En `SMTP_PASS` pega la contraseña de aplicación sin los espacios de separación que Google puede mostrar
 
-Para aplicar cambios de configuración, recrea el backend.
+Para aplicar cambios de configuración, recrea el backend
 
 **Windows (PowerShell):**
 
@@ -401,17 +401,17 @@ Para verificar la conexión SMTP sin enviar un correo, ejecuta:
 docker compose exec backend node scripts/verificar-smtp.js
 ```
 
-El diagnóstico comprueba la conexión y autenticación SMTP. Para comprobar el flujo completo de confirmación, realiza una compra de prueba y verifica la bandeja de entrada del correo utilizado por la cuenta cliente.
+El diagnóstico comprueba la conexión y autenticación SMTP. Para comprobar el flujo completo de confirmación, realiza una compra de prueba y verifica la bandeja de entrada del correo utilizado por la cuenta cliente
 
 ### Panel administrativo
 
-El panel permite consultar métricas, productos y pedidos. Las métricas incluyen ventas registradas, ticket promedio, pedidos pagados y productos más vendidos.
+El panel permite consultar métricas, productos y pedidos. Las métricas incluyen ventas registradas, ticket promedio, pedidos pagados y productos más vendidos
 
 En la tabla de pedidos se muestra únicamente el estado del pago (por ejemplo, `aprobado`, `pendiente` o `rechazado`)
 
 ## 6. Base de datos y persistencia
 
-Los datos de MySQL se guardan en el volumen Docker `ergodesk_data`. Detener o recrear los contenedores no elimina ese volumen.
+Los datos de MySQL se guardan en el volumen Docker `ergodesk_data`. Detener o recrear los contenedores no elimina ese volumen
 
 **Windows (PowerShell) — detener y volver a iniciar:**
 
@@ -443,4 +443,4 @@ docker compose --profile test run --rm backend-test
 docker compose --profile test run --rm backend-test
 ```
 
-El servicio `backend-test` construye la imagen con las dependencias de desarrollo y ejecuta las pruebas automatizadas.
+El servicio `backend-test` construye la imagen con las dependencias de desarrollo y ejecuta las pruebas automatizadas
