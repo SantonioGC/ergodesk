@@ -28,7 +28,7 @@ services:
     restart: always
     expose:
       - "3000"
-    # Solo localhost: permite que Stripe CLI reenvíe webhooks durante pruebas.
+    
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
