@@ -263,9 +263,9 @@ async function cargarPedidos() {
       <h3>Pedido #${p.id} — ${p.estatus}</h3>
       <p>${new Date(p.fecha).toLocaleString("es-MX")} · ${Store.formatearPrecio(p.total)}</p>
       <ul>${p.items.map(i => `<li>${i.nombre} x${i.cantidad}</li>`).join("")}</ul>
-      <p>Pago: ${p.metodo === "stripe" ? "Stripe Checkout (Sandbox)" : "Método anterior"} (${p.pago_estatus})</p>
+      <p>Pago: ${p.metodo === "stripe" ? "Checkout" : "Método anterior"} (${p.pago_estatus})</p>
       <p>Envío: ${p.paqueteria} (${p.envio_estatus})</p>
-      ${p.estatus === "pendiente" && p.metodo === "stripe" ? `<p>Esperando confirmación de Stripe.</p>` : ""}
+      ${p.estatus === "pendiente" && p.metodo === "stripe" ? `<p>Esperando confirmación.</p>` : ""}
     </div>
   `).join("");
 }
