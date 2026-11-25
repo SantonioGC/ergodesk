@@ -1,0 +1,169 @@
+#admin {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+#admin h1 { font-size: 2.5rem; letter-spacing: 0.1em; }
+
+#admin h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin: 1.75rem 0 0.9rem;
+}
+
+#admin-aviso {
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text-sub);
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin: 1rem 0 1.75rem;
+  padding: 4px;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.tabs button {
+  padding: 0.55rem 1.2rem;
+  background: transparent;
+  color: var(--text-sub);
+  border: none;
+  border-radius: calc(var(--radius-lg) - 2px);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+.tabs button:hover { color: var(--text); }
+.tabs button.activa {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition);
+}
+.tarjeta:hover { border-color: var(--accent); }
+.tarjeta span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+.tarjeta strong {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+#m-top { padding-left: 1.2rem; list-style: disc; color: var(--text-sub); }
+#m-top li { padding: 0.2rem 0; }
+
+.form-producto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.6rem;
+}
+
+#admin input,
+#admin select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+#admin input:focus,
+#admin select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#admin button:not(.tabs button) {
+  padding: 0.5rem 1rem;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+#admin button:not(.tabs button):hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+#btn-crear {
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  border-color: var(--accent) !important;
+  font-weight: 600 !important;
+}
+#btn-crear:hover { background: var(--accent-hover) !important; color: var(--on-accent) !important; }
+
+.tabla-scroll {
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+#admin table { width: 100%; border-collapse: collapse; min-width: 900px; }
+
+#admin th,
+#admin td {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  vertical-align: middle;
+}
+#admin th {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+  background: var(--surface);
+}
+#admin tbody tr:last-child td { border-bottom: none; }
+#admin tbody tr:hover td { background: var(--accent-glow2); }
+
+#admin td input[type="number"] { width: 90px; }
+#admin td textarea { width: 250px; min-height: 76px; resize: vertical; padding: 0.5rem; font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+#admin td button { margin-right: 0.3rem; padding: 0.35rem 0.7rem; }
+
+@media (max-width: 700px) {
+  #admin { padding: 1.5rem 1rem; }
+}

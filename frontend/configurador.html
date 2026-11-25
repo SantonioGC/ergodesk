@@ -1,0 +1,77 @@
+<!-- Módulo configurador-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurador — ErgoDesk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/configurador.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo-link"><span class="logo">ErgoDesk</span></a>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="configurador.html">Configurador</a></li>
+      <li><a href="carrito.html">Carrito <span id="carrito-contador"></span></a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+    </ul>
+  </nav>
+
+  <main id="configurador">
+    <h1>Configura tu escritorio</h1>
+
+    <section id="seccion-tamano">
+      <h2>Tamaño de la superficie</h2>
+      <div id="opciones-tamano">
+      </div>
+    </section>
+
+    <section id="seccion-patas">
+      <h2>Tipo de patas</h2>
+      <div id="opciones-patas">
+      </div>
+    </section>
+
+    <section id="seccion-acabado">
+      <h2>Acabado</h2>
+      <div id="opciones-acabado"></div>
+    </section>
+
+    <section id="seccion-accesorios">
+      <h2>Accesorios</h2>
+      <div id="opciones-accesorios"></div>
+    </section>
+
+    <section id="seccion-preview">
+      <h2>Tu escritorio</h2>
+      <div id="preview-escritorio">
+        <p id="preview-tamano"></p>
+        <p id="preview-patas"></p>
+        <p id="preview-acabado"></p>
+        <ul id="preview-accesorios"></ul>
+      </div>
+    </section>
+
+    <section id="seccion-precio">
+      <p>Precio estimado: <strong id="precio-total"></strong></p>
+      <button id="btn-agregar-carrito">Agregar al carrito</button>
+    </section>
+
+  </main>
+
+    <footer>
+    © ErgoDesk MX ·
+    <a href="privacidad.html">Aviso de privacidad</a> ·
+    <a href="terminos.html">Términos y condiciones</a>
+  </footer>
+
+<script src="data/productos.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/configurador.js"></script>
+</body>
+</html>
