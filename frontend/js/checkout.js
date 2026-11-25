@@ -1,5 +1,5 @@
 //logica del checkout
-const NOMBRES = { estafeta: "Estafeta", dhl: "DHL", stripe: "Tarjeta con Stripe (Sandbox)" };
+const NOMBRES = { estafeta: "Estafeta", dhl: "DHL", stripe: "Tarjeta Credito/Debito" };
 const METODOS_PAGO = ["stripe"];
 
 let checkout = null;
@@ -124,7 +124,7 @@ function renderizarResumen() {
   document.getElementById("resumen-total").textContent = Store.formatearPrecio(checkout.total);
   document.getElementById("resumen-pago").textContent = NOMBRES[checkout.pago_metodo];
 
-  document.getElementById("btn-pagar-ok").textContent = "Pagar con Stripe (modo de prueba)";
+  document.getElementById("btn-pagar-ok").textContent = "Pagar";
 }
 
 //cuenta regresiva de la reserva, al llegar a 0 se intenta reservar de nuevo
@@ -164,7 +164,7 @@ async function pagar() {
 
   if (checkout.pago_metodo !== "stripe") {
     boton.disabled = false;
-    mostrarError("El único método de pago disponible es Stripe Checkout.");
+    mostrarError("El único método de pago disponible es tarjeta.");
     return;
   }
 
@@ -172,7 +172,7 @@ async function pagar() {
   if (!r.ok) {
     boton.disabled = false;
     if (r.problemas) return mostrarProblemas(r.error, r.problemas);
-    return mostrarError(r.error || "no se pudo iniciar el pago con Stripe");
+    return mostrarError(r.error || "no se pudo iniciar el pago");
   }
   location.href = r.url;
 }
@@ -182,7 +182,7 @@ async function manejarRetornoStripe(parametros) {
   [1, 2, 3, 4].forEach(i => { document.getElementById(`paso-${i}`).style.display = "none"; });
   document.getElementById("resultado").style.display = "block";
   document.getElementById("titulo-resultado").textContent = "Verificando tu pago";
-  document.getElementById("mensaje-resultado").textContent = "Estamos consultando el estado de tu pago con Stripe.";
+  document.getElementById("mensaje-resultado").textContent = "Estamos consultando el estado de tu pago.";
   document.getElementById("btn-reintentar").style.display = "none";
 
   const sessionId = parametros.get("session_id");
@@ -213,7 +213,7 @@ async function manejarRetornoStripe(parametros) {
     mostrarResultado(r);
   } else {
     document.getElementById("titulo-resultado").textContent = "Pago pendiente de confirmación";
-    document.getElementById("mensaje-resultado").textContent = `Pedido #${r.orden_id}. Stripe todavía no confirma el pago. Consulta tus pedidos en unos momentos.`;
+    document.getElementById("mensaje-resultado").textContent = `Pedido #${r.orden_id}. Consulta tus pedidos en unos momentos.`;
   }
 }
 
