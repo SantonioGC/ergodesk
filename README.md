@@ -17,8 +17,8 @@
 - Base de datos: MySQL 8
 - Servidor web y proxy inverso: Nginx
 - Contenedores: Docker y Docker Compose v2
-- Pagos con tarjeta: Stripe Checkout en modo de prueba
-- Correos de confirmación: Resend, cuando se configuran sus credenciales
+- Pagos con tarjeta: Stripe Checkout
+- Correos de confirmación: Nodemailer mediante SMTP de Gmail
 
 ## 2. Requisitos
 
@@ -26,18 +26,20 @@
 
 1. Git for Windows
 2. Docker Desktop
-3. Habilitar y utilizar el backend de WSL 2 en Docker Desktop
-4. Iniciar Docker Desktop antes de ejecutar los comandos de Docker
-5. Utilizar PowerShell para los comandos de Git y Docker
+3. Habilitar y utilizar el backend de WSL 2
+4. Docker Desktop
+5. PowerShell
 
 ### Linux
 
-1. Git.
-2. Docker Engine.
+1. Git
+2. Docker Engine
 3. Docker Compose v2
-4. OpenSSL
+4. OpenSSL.
 
 ## 3. Instalación en Windows (PowerShell)
+
+Realiza estos pasos en orden. Abre PowerShell y utiliza esta sección completa para instalar el proyecto en Windows
 
 ### 3.1. Clonar el repositorio
 
@@ -88,8 +90,12 @@ STRIPE_WEBHOOK_SECRET=
 
 FRONTEND_URL=https://localhost
 
-RESEND_API_KEY=
-RESEND_FROM=onboarding@resend.dev
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=
+SMTP_PASS=
+SMTP_FROM=
 "@
     Set-Content -Path .env -Value $envContent -Encoding ascii
 
@@ -147,6 +153,8 @@ En la primera ejecución Docker descarga las imágenes, construye el backend, cr
 docker compose ps
 ```
 
+En una instalación correcta, `db` y `backend` deben aparecer como `healthy`, y `nginx` como `Up`.
+
 Para revisar los registros:
 
 ```powershell
@@ -190,6 +198,8 @@ El script crea el administrador o asigna el rol de administrador a una cuenta qu
 
 ## 4. Instalación en Linux (terminal)
 
+Realiza estos pasos en orden. Los comandos de esta sección son para una terminal Linux; no los ejecutes en PowerShell.
+
 ### 4.1. Clonar el repositorio
 
 ```bash
@@ -230,13 +240,17 @@ STRIPE_WEBHOOK_SECRET=
 
 FRONTEND_URL=https://localhost
 
-RESEND_API_KEY=
-RESEND_FROM=onboarding@resend.dev
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=
+SMTP_PASS=
+SMTP_FROM=
 ENV_FILE
 
   chmod 600 .env
   unset DB_PASSWORD MYSQL_ROOT_PASSWORD JWT_SECRET
-  echo ".env creado con secretos aleatorios. No lo subas a Git."
+  echo ".env creado con secretos aleatorios."
 fi
 ```
 
@@ -264,6 +278,8 @@ Comprueba que Docker Engine esté en ejecución. Desde la raíz de `ergodesk`, e
 ```bash
 docker compose config --quiet
 ```
+
+Si tu usuario no tiene permiso para utilizar Docker, puede que necesites anteponer `sudo` a los comandos de Docker.
 
 ### 4.5. Construir e iniciar ErgoDesk
 
@@ -332,9 +348,9 @@ Esta configuración es igual para Windows y Linux; lo que cambia es el editor ut
 - **Windows:** abre el archivo con `notepad .env` desde PowerShell.
 - **Linux:** abre el archivo con `nano .env` desde la terminal.
 
-### Stripe Checkout
+### Stripe Checkout (modo de prueba)
 
-Para probar pagos con tarjeta, configura una clave secreta de Stripe de pruebas (`sk_test_`) en `STRIPE_SECRET_KEY`. No utilices claves `sk_live_` ni tarjetas bancarias reales.
+Para probar pagos con tarjeta, configura una clave secreta de Stripe de pruebas (`sk_test_`) en `STRIPE_SECRET_KEY`. No utilices claves `sk_live_` ni tarjetas bancarias reales. Los pagos registrados en este proyecto corresponden al entorno de pruebas y no representan cobros reales.
 
 La tarjeta de prueba aprobada de Stripe es:
 
@@ -346,11 +362,26 @@ La tarjeta de prueba aprobada de Stripe es:
 
 Si `STRIPE_SECRET_KEY` está vacía, la tienda puede abrirse, pero no se podrán completar pagos con tarjeta.
 
-### Correos de confirmación
+### Correos de confirmación con Gmail SMTP
 
-Para enviar correos de confirmación configura `RESEND_API_KEY` y un remitente permitido en `RESEND_FROM`. Para envíos a destinatarios externos en un uso real, utiliza un dominio verificado en Resend.
+El backend utiliza Nodemailer para enviar el correo de confirmación a la dirección de correo asociada a la cuenta del cliente.
 
-Después de cambiar variables de Stripe o Resend, recrea el backend.
+1. Activa la verificación en dos pasos en la cuenta de Google que utilizarás como remitente.
+2. Genera una **contraseña de aplicación** desde la configuración de seguridad de Google. Utiliza esa contraseña, no la contraseña normal de Gmail.
+3. Completa estas variables en `.env`:
+
+```dotenv
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=tu_cuenta@gmail.com
+SMTP_PASS=tu_contrasena_de_aplicacion
+SMTP_FROM=ErgoDesk <tu_cuenta@gmail.com>
+```
+
+`SMTP_USER` y el correo dentro de `SMTP_FROM` deben corresponder a la cuenta Gmail que generó la contraseña de aplicación. En `SMTP_PASS` pega la contraseña de aplicación sin los espacios de separación que Google puede mostrar.
+
+Para aplicar cambios de configuración, recrea el backend.
 
 **Windows (PowerShell):**
 
@@ -363,6 +394,20 @@ docker compose up -d --force-recreate backend
 ```bash
 docker compose up -d --force-recreate backend
 ```
+
+Para verificar la conexión SMTP sin enviar un correo, ejecuta:
+
+```bash
+docker compose exec backend node scripts/verificar-smtp.js
+```
+
+El diagnóstico comprueba la conexión y autenticación SMTP. Para comprobar el flujo completo de confirmación, realiza una compra de prueba y verifica la bandeja de entrada del correo utilizado por la cuenta cliente.
+
+### Panel administrativo
+
+El panel permite consultar métricas, productos y pedidos. Las métricas incluyen ventas registradas, ticket promedio, pedidos pagados y productos más vendidos.
+
+En la tabla de pedidos se muestra únicamente el estado del pago (por ejemplo, `aprobado`, `pendiente` o `rechazado`)
 
 ## 6. Base de datos y persistencia
 
@@ -397,34 +442,5 @@ docker compose --profile test run --rm backend-test
 ```bash
 docker compose --profile test run --rm backend-test
 ```
+
 El servicio `backend-test` construye la imagen con las dependencias de desarrollo y ejecuta las pruebas automatizadas.
-
-## 9. Estructura del repositorio
-
-```text
-ergodesk/
-├── backend/
-│   ├── db/
-│   │   ├── migrations/
-│   │   └── schema.sql
-│   ├── routes/
-│   ├── scripts/
-│   ├── services/
-│   ├── tests/
-│   ├── Dockerfile
-│   ├── db.js
-│   └── server.js
-├── certs/                 
-├── frontend/
-│   ├── css/
-│   ├── data/
-│   ├── js/
-│   └── *.html
-├── nginx/
-│   └── nginx.conf
-├── scripts/
-│   └── generar-certificado-local.sh
-├── .gitignore
-├── docker-compose.yml
-└── README.md
-```
